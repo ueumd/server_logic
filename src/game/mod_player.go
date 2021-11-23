@@ -59,3 +59,12 @@ func (self *ModPlayer) SetSign(sign string, player *Player) {
 	player.ModPlayer.Sign = sign
 	fmt.Println("当家签名：", player.ModPlayer.Sign)
 }
+
+// 等级
+func (self *ModPlayer) AddExp(exp int) {
+	self.PlayerExp += exp
+
+	for {
+
+	}
+}

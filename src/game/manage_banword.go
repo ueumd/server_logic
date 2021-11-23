@@ -3,6 +3,8 @@ package game
 import (
 	"fmt"
 	"regexp"
+	"server_logic/csvs"
+	"time"
 )
 
 // 违禁词库
@@ -44,4 +46,22 @@ func (self *ManageBanWord) IsBanWord(txt string) bool {
 	}
 
 	return false
+}
+
+// 定时更新词库
+func (self *ManageBanWord) Run() {
+	//加载基础词库
+	self.BanWordBase = csvs.GetBanWordBase()
+
+	ticker := time.NewTicker(time.Second * 1)
+	for {
+		select {
+		case <-ticker.C:
+			if time.Now().Unix()%10 == 0 {
+				fmt.Println("更新词库")
+			} else {
+				fmt.Println("待机")
+			}
+		}
+	}
 }
