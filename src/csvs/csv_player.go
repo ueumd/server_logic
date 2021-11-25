@@ -1,4 +1,5 @@
 package csvs
+
 import (
 	"encoding/csv"
 	"fmt"
@@ -19,9 +20,9 @@ var (
 )
 
 // 加载玩家等级
-func loadCsv()  {
-	exPath,_ := os.Getwd()
-	fmt.Println("path",exPath)
+func loadCsv() {
+	exPath, _ := os.Getwd()
+	fmt.Println("path", exPath)
 
 	fs, _ := os.Open("./PlayerLevel.csv")
 	result := csv.NewReader(fs)
@@ -38,7 +39,7 @@ func loadCsv()  {
 			ChapterId, _ := strconv.Atoi(row[3])
 
 			ConfigPlayerLevelSlice = append(ConfigPlayerLevelSlice,
-				&ConfigPlayerLevel{PlayerLevel, PlayerExp, WorldLevel, ChapterId },
+				&ConfigPlayerLevel{PlayerLevel, PlayerExp, WorldLevel, ChapterId},
 			)
 
 		}
@@ -53,10 +54,10 @@ func init() {
 	loadCsv()
 }
 
-func GetNowLevelConfig(level int) *ConfigPlayerLevel  {
-	if level < 0 || level >= len(ConfigPlayerLevelSlice) {
+func GetNowLevelConfig(level int) *ConfigPlayerLevel {
+	if level < 0 || level > len(ConfigPlayerLevelSlice) {
 		return nil
 	}
 
-	return ConfigPlayerLevelSlice[level]
+	return ConfigPlayerLevelSlice[level-1]
 }

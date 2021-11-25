@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"server/csvs"
 	"server/game"
-	"time"
 )
 
 func main() {
@@ -29,6 +28,9 @@ func main() {
 	go game.GetManageBanWord().Run()
 
 	playerGM := game.NewTestPlayer()
+
+	// 直接升级到 60级
+	playerGM.ModPlayer.AddExp(10000000)
 
 	//playerGM.RecvSetIcon(1) // 胡桃
 	//playerGM.RecvSetIcon(2) //
@@ -71,12 +73,13 @@ func main() {
 	//	}
 	//}
 
-	ticker := time.NewTicker(time.Second * 3)
+	// 玩家等级测试
+	// ticker := time.NewTicker(time.Second * 3)
 	for {
-		select {
-		case <-ticker.C:
-			playerGM.ModPlayer.AddExp(5000)
-		}
+		//select {
+		//case <-ticker.C:
+		//	playerGM.ModPlayer.AddExp(5000)
+		//}
 	}
 
 }
