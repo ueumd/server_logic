@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"server_logic/csvs"
+	"server/csvs"
+	"server/game"
 	"time"
 )
-import "server_logic/game"
 
 func main() {
 	// 当前模块基础信息
@@ -28,22 +28,22 @@ func main() {
 	// 协程更新词库
 	go game.GetManageBanWord().Run()
 
-	player := game.NewTestPlayer()
+	playerGM := game.NewTestPlayer()
 
-	//player.RecvSetIcon(1) // 胡桃
-	//player.RecvSetIcon(2) //
-	//player.RecvSetIcon(3)
+	//playerGM.RecvSetIcon(1) // 胡桃
+	//playerGM.RecvSetIcon(2) //
+	//playerGM.RecvSetIcon(3)
 	//
-	//player.RecvSetCard(1)
-	//player.RecvSetCard(2)
-	//player.RecvSetCard(3)
+	//playerGM.RecvSetCard(1)
+	//playerGM.RecvSetCard(2)
+	//playerGM.RecvSetCard(3)
 
 	// 改名
-	//player.RecvSetName("好人")
-	//player.RecvSetName("坏蛋")
-	//player.RecvSetName("求外挂")
-	//player.RecvSetName("好玩")
-	//player.RecvSetName("TMD")
+	//playerGM.RecvSetName("好人")
+	//playerGM.RecvSetName("坏蛋")
+	//playerGM.RecvSetName("求外挂")
+	//playerGM.RecvSetName("好玩")
+	//playerGM.RecvSetName("TMD")
 
 	// 测试
 	//tickerIn := time.NewTicker(time.Second * 3) // 3S
@@ -52,22 +52,30 @@ func main() {
 	//for {
 	//	select {
 	//	case <-tickerIn.C:
-	//		player.RecvSetIcon(int(time.Now().Unix()))
+	//		playerGM.RecvSetIcon(int(time.Now().Unix()))
 	//	case <-tickerOut.C:
-	//		player.RecvSetName("r u ok")
+	//		playerGM.RecvSetName("r u ok")
 	//	}
 	//}
 
 	// 测试违禁词库
-	ticker := time.NewTicker(time.Second * 1)
+	//ticker := time.NewTicker(time.Second * 1)
+	//for {
+	//	select {
+	//	case <-ticker.C:
+	//		if time.Now().Unix()%3 == 0 {
+	//			playerGM.RecvSetName("专业代练")
+	//		} else if time.Now().Unix()%5 == 0 {
+	//			playerGM.RecvSetName("良民")
+	//		}
+	//	}
+	//}
+
+	ticker := time.NewTicker(time.Second * 3)
 	for {
 		select {
 		case <-ticker.C:
-			if time.Now().Unix()%3 == 0 {
-				player.RecvSetName("专业代练")
-			} else if time.Now().Unix()%5 == 0 {
-				player.RecvSetName("良民")
-			}
+			playerGM.ModPlayer.AddExp(5000)
 		}
 	}
 

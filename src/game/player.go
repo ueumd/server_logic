@@ -14,8 +14,11 @@ func NewTestPlayer() *Player {
 	// 玩家信息初始化
 	player.ModPlayer = new(ModPlayer)
 	player.ModIcon = new(ModIcon)
-
+	player.ModCard = new(ModCard)
 	player.ModPlayer.Icon = 0
+
+	player.ModPlayer.PlayerLevel = 1
+
 	return player
 }
 

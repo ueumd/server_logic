@@ -1,3 +1,3 @@
-module server_logic
+module server
 
 go 1.16

@@ -1,6 +1,9 @@
 package game
 
-import "fmt"
+import (
+	"fmt"
+	"server/csvs"
+)
 
 // 玩家信息
 
@@ -65,6 +68,23 @@ func (self *ModPlayer) AddExp(exp int) {
 	self.PlayerExp += exp
 
 	for {
+		config := csvs.GetNowLevelConfig(self.PlayerLevel)
+		if config == nil {
+			break
+		}
+		// 达到上限
+		if config.PlayerExp == 0 {
+			break
+		}
+		// 是否完成任务
 
+		// 升级
+		if self.PlayerExp >= config.PlayerExp {
+			self.PlayerLevel += 1
+			self.PlayerExp -= config.PlayerExp
+		} else {
+			break
+		}
 	}
+	fmt.Println("当前等级：", self.PlayerLevel, " 当前经验：", self.PlayerExp)
 }
