@@ -60,7 +60,7 @@ func (self *ManageBanWord) Run() {
 			if time.Now().Unix()%10 == 0 {
 				fmt.Println("更新词库")
 			} else {
-				fmt.Println("待机")
+				// fmt.Println("待机")
 			}
 		}
 	}

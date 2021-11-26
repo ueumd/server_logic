@@ -3,31 +3,34 @@ package game
 import (
 	"fmt"
 	"server/csvs"
+	"time"
 )
 
 // 玩家信息
 type ModPlayer struct {
-	UserId         int
-	Icon           int
+	UserId         int    // 唯id
+	Icon           int    // 头像
 	Card           int    // 名片
 	Name           string // 名字
 	Sign           string // 签名
-	PlayerLevel    int    // 玩家等级 由配置表导入
-	PlayerExp      int    // 玩家经验 由配置表导入
-	WorldLevel     int
-	WorldLevelCool int64
-	Birth          int
-	ShowTeam       []int // 阵容模块
-	ShowCard       int
+	PlayerLevel    int    // 玩家等级 	由配置表导入
+	PlayerExp      int    // 阅历（经验） 由配置表导入
+	WorldLevel     int    // 大世界等级
+	WorldLevelNow  int    // 大世界等级(当前)
+	WorldLevelCool int64  // 操作大世界等级冷确时间
+	Birth          int    // 生日
+	ShowTeam       []int  // 展示阵容
+	ShowCard       int    // 展示名片
 
-	// 看不见的字段
-	IsProhibit int
-	IsGM       int
+	// 游戏中看不见的字段
+	IsProhibit int // 封禁状态
+	IsGM       int // GM帐号标志
 }
 
 func (self *ModPlayer) SetIcon(iconId int, player *Player) {
 	if !player.ModIcon.IsHasIcon(iconId) {
 		// 通知客户端 非法操作
+		return
 	}
 
 	player.ModPlayer.Icon = iconId
@@ -91,4 +94,49 @@ func (self *ModPlayer) AddExp(exp int, player *Player) {
 		}
 	}
 	fmt.Println("当前等级：", self.PlayerLevel, " 当前经验：", self.PlayerExp)
+}
+
+
+// 降低世界等级
+func (self *ModPlayer) ReduceWorldLevel(player *Player) {
+	// 达到5级才可以降低等级
+	if self.WorldLevel < csvs.REDUCE_WORLD_LEVEL_START {
+		fmt.Println("操作失败： ---当前世界等级：", self.WorldLevel)
+		return
+	}
+
+	if self.WorldLevel - self.WorldLevelNow>=csvs.REDUCE_WORLD_LEVEL_MAX {
+		fmt.Println("操作失败： ---当前世界等级：", self.WorldLevel, "---真实世界等级：", self.WorldLevelNow)
+		return
+	}
+
+	if time.Now().Unix()<self.WorldLevelCool {
+		fmt.Println("操作失败： ---冷确中")
+		return
+	}
+
+	self.WorldLevelNow -= 1
+	self.WorldLevelCool = time.Now().Unix() + csvs.REDUCE_WORLD_LEVEL_COOL_TIME
+
+	fmt.Println("操作成功： ---当前世界等级：", self.WorldLevel, "---真实世界等级：", self.WorldLevelNow)
+	return
+}
+
+// 返回等级
+func (self *ModPlayer) ReturnWorldLevel(player *Player) {
+	if self.WorldLevelNow == self.WorldLevel {
+		fmt.Println("操作失败： ---当前世界等级：", self.WorldLevel, "---真实世界等级：", self.WorldLevelNow)
+		return
+	}
+
+	if time.Now().Unix()<self.WorldLevelCool {
+		fmt.Println("操作失败： ---冷确中")
+		return
+	}
+
+	self.WorldLevelNow += 1
+	self.WorldLevelCool = time.Now().Unix() + csvs.REDUCE_WORLD_LEVEL_COOL_TIME
+
+	fmt.Println("操作成功： ---当前世界等级：", self.WorldLevel, "---真实世界等级：", self.WorldLevelNow)
+	return
 }

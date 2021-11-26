@@ -19,11 +19,10 @@ func main() {
 	// 8 展示阵容 展示名片
 
 	// 加载配置
-
-	fmt.Println("数据测试-----start\n")
-
 	// 执行csv所有init
 	csvs.CheckLoadCsv()
+
+	fmt.Println("数据测试-----start\n")
 
 	// 协程更新词库
 	go game.GetManageBanWord().Run()
@@ -71,7 +70,6 @@ func main() {
 	//	}
 	//}
 
-
 	// 玩家等级测试
 	// 直接升级到 60级
 	playerGM.ModPlayer.AddExp(10000000, playerGM)
@@ -99,6 +97,21 @@ func main() {
 	//go playerLoadConfig(playerGM)
 	//go playerLoadConfig(playerGM)
 
+	// 玩家世界等级测试
+	ticker := time.NewTicker(time.Second * 1)
+	for {
+		select {
+		case <-ticker.C:
+			if time.Now().Unix()%3 == 0 {
+				// 降
+				playerGM.ReturnWorldLevel()
+
+			} else if time.Now().Unix()%5 == 0 {
+				playerGM.ReduceWorldLevel()
+			}
+		}
+	}
+
 	// 确实协程在不断运行
 	for {
 		//
@@ -108,21 +121,19 @@ func main() {
 
 }
 
-
-
 // ********************测试************************
 
 // 突破任务测试 map并发读写安全问题
 // fatal error: concurrent map read and map write
 
-func playerSet(player *game.Player)  {
-	for i:=0; i<1000000; i++ {
+func playerSet(player *game.Player) {
+	for i := 0; i < 1000000; i++ {
 		player.ModUniqueTask.MyTaskInfo[10001] = new(game.TaskInfo)
 	}
 }
 
-func playerGet(player *game.Player)  {
-	for i:=0; i<1000000; i++ {
+func playerGet(player *game.Player) {
+	for i := 0; i < 1000000; i++ {
 		_, ok := player.ModUniqueTask.MyTaskInfo[10001]
 		if ok {
 		}
@@ -130,9 +141,9 @@ func playerGet(player *game.Player)  {
 }
 
 // 加上 读写锁 有性能消耗
-func playerSetLock(player *game.Player)  {
+func playerSetLock(player *game.Player) {
 	startTime := time.Now().Nanosecond()
-	for i:=0; i<1000000; i++ {
+	for i := 0; i < 1000000; i++ {
 		// 加上锁
 		player.ModUniqueTask.Locker.Lock()
 		player.ModUniqueTask.MyTaskInfo[10001] = new(game.TaskInfo)
@@ -140,13 +151,13 @@ func playerSetLock(player *game.Player)  {
 	}
 	endTime := time.Now().Nanosecond() - startTime
 
-	fmt.Println(endTime/1000000)
+	fmt.Println(endTime / 1000000)
 
 }
 
-func playerGetLock(player *game.Player)  {
+func playerGetLock(player *game.Player) {
 	startTime := time.Now().Nanosecond()
-	for i:=0; i<1000000; i++ {
+	for i := 0; i < 1000000; i++ {
 		player.ModUniqueTask.Locker.RLock()
 		_, ok := player.ModUniqueTask.MyTaskInfo[10001]
 		if ok {
@@ -156,16 +167,15 @@ func playerGetLock(player *game.Player)  {
 	}
 	endTime := time.Now().Nanosecond() - startTime
 
-	fmt.Println(endTime/1000000)
+	fmt.Println(endTime / 1000000)
 }
 
-
 // 对于配置模块所有玩家都是在读 不加锁
-func playerLoadConfig(player *game.Player)  {
-	for i:=0; i<1000000; i++ {
+func playerLoadConfig(player *game.Player) {
+	for i := 0; i < 1000000; i++ {
 		config := csvs.ConfigUniqueTaskMap[10001]
 
-		if config != nil{
+		if config != nil {
 			fmt.Println(config.TaskId)
 		}
 	}

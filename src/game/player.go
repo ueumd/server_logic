@@ -38,6 +38,10 @@ func NewTestPlayer() *Player {
 	// 初始化值
 	player.ModPlayer.Icon = 0
 	player.ModPlayer.PlayerLevel = 1
+
+	// 玩家等级初始化
+	player.ModPlayer.WorldLevel = 6
+	player.ModPlayer.WorldLevelNow = 6
 	//************************************
 
 	return player
@@ -58,4 +62,14 @@ func (self *Player) RecvSetName(name string) {
 
 func (self *Player) RecvSetSign(name string) {
 	self.ModPlayer.SetSign(name, self)
+}
+
+// 降低世界等级
+func (self *Player) ReduceWorldLevel() {
+	self.ModPlayer.ReduceWorldLevel(self)
+}
+
+// 返回等级
+func (self *Player) ReturnWorldLevel() {
+	self.ModPlayer.ReturnWorldLevel(self)
 }
