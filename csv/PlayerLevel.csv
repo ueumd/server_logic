@@ -1,4 +1,6 @@
 ﻿PlayerLevel,PlayerExp,worldLevel,ChapterId
+INT,INT,INT,INT
+战队等级,战队每级经验,总经经验,升级增加当前体力
 1,375,1,0
 2,500,1,0
 3,625,1,0

@@ -1,12 +1,22 @@
 package game
 
+import "sync"
+
+// 任务状态
+const (
+	TASK_STATE_INIT   = 0
+	TASK_STATE_DOING  = 1 // 进入副本
+	TASK_STATE_FINISH = 2 // 完成
+)
+
 type Player struct {
-	ModPlayer *ModPlayer
-	ModIcon   *ModIcon
-	ModCard   *ModCard
+	ModPlayer     *ModPlayer
+	ModIcon       *ModIcon
+	ModCard       *ModCard
+	ModUniqueTask *ModUniqueTask
 }
 
-// 测试
+// 测试 初始化
 func NewTestPlayer() *Player {
 	// 生成一个玩家
 	player := new(Player)
@@ -15,9 +25,16 @@ func NewTestPlayer() *Player {
 	player.ModPlayer = new(ModPlayer)
 	player.ModIcon = new(ModIcon)
 	player.ModCard = new(ModCard)
-	player.ModPlayer.Icon = 0
+	player.ModUniqueTask = new(ModUniqueTask)
+	player.ModUniqueTask.MyTaskInfo = make(map[int]*TaskInfo)
+	player.ModUniqueTask.Locker = new(sync.RWMutex)
 
+	//************************************
+
+	player.ModPlayer.Icon = 0
 	player.ModPlayer.PlayerLevel = 1
+
+	//************************************
 
 	return player
 }

@@ -24,7 +24,7 @@ func loadCsv() {
 	exPath, _ := os.Getwd()
 	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("./PlayerLevel.csv")
+	fs, _ := os.Open("../csv/PlayerLevel.csv")
 	result := csv.NewReader(fs)
 
 	content, err := result.ReadAll()
@@ -32,7 +32,7 @@ func loadCsv() {
 		log.Fatalf("can not readall, err is %+v", err)
 	}
 	for index, row := range content {
-		if index > 0 {
+		if index > 2 {
 			PlayerLevel, _ := strconv.Atoi(row[0])
 			PlayerExp, _ := strconv.Atoi(row[1])
 			WorldLevel, _ := strconv.Atoi(row[2])

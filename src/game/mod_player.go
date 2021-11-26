@@ -64,7 +64,7 @@ func (self *ModPlayer) SetSign(sign string, player *Player) {
 }
 
 // 玩家等级
-func (self *ModPlayer) AddExp(exp int) {
+func (self *ModPlayer) AddExp(exp int, player *Player) {
 	self.PlayerExp += exp
 
 	for {
@@ -76,7 +76,12 @@ func (self *ModPlayer) AddExp(exp int) {
 		if config.PlayerExp == 0 {
 			break
 		}
-		// 是否完成任务
+
+		// 是否完成任务 才能升级
+		if config.ChapterId > 0 && !player.ModUniqueTask.IsTaskFinish(config.ChapterId) {
+			// 到25级不给升了，任务卡住了
+			break
+		}
 
 		// 升级
 		if self.PlayerExp >= config.PlayerExp {
