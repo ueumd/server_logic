@@ -1,5 +1,13 @@
+## server
+Go游戏后端服务开发
 
-##
-- Golang使用CSV读取、导出文件 
-- https://studygolang.com/articles/27469?fr=sidebar
-- https://zhuanlan.zhihu.com/p/393759824
+## 服务
+### 当前模块基础信息 
+1. UID 
+2. 头像 名片 
+3. 签名 
+4. 名字 
+5. 冒险等级 冒险阅历 
+6. 世界等级 冷却时间 
+7. 生日 
+8. 展示阵容 展示名片

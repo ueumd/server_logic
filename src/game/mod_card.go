@@ -1,5 +1,6 @@
 package game
 
+// 玩家名片Mode
 type ModCard struct {
 }
 

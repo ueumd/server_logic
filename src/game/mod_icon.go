@@ -1,5 +1,6 @@
 package game
 
+// 玩家Icon
 type ModIcon struct {
 }
 

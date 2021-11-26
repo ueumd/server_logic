@@ -2,6 +2,10 @@ package game
 
 import "sync"
 
+/**
+实例化一个玩家信息
+ */
+
 // 任务状态
 const (
 	TASK_STATE_INIT   = 0
@@ -9,11 +13,12 @@ const (
 	TASK_STATE_FINISH = 2 // 完成
 )
 
+// 玩家信息装组
 type Player struct {
-	ModPlayer     *ModPlayer
-	ModIcon       *ModIcon
-	ModCard       *ModCard
-	ModUniqueTask *ModUniqueTask
+	ModPlayer     *ModPlayer	// 玩家信息
+	ModIcon       *ModIcon		// 玩家Icon
+	ModCard       *ModCard		// 玩家名片
+	ModUniqueTask *ModUniqueTask // 任务
 }
 
 // 测试 初始化
@@ -30,10 +35,9 @@ func NewTestPlayer() *Player {
 	player.ModUniqueTask.Locker = new(sync.RWMutex)
 
 	//************************************
-
+	// 初始化值
 	player.ModPlayer.Icon = 0
 	player.ModPlayer.PlayerLevel = 1
-
 	//************************************
 
 	return player

@@ -92,11 +92,12 @@ func main() {
 	// go playerSetLock(playerGM)
 	// go playerGetLock(playerGM)
 
-	go playerLoadConfig(playerGM)
-	go playerLoadConfig(playerGM)
-	go playerLoadConfig(playerGM)
-	go playerLoadConfig(playerGM)
-	go playerLoadConfig(playerGM)
+	// config读取不加锁
+	//go playerLoadConfig(playerGM)
+	//go playerLoadConfig(playerGM)
+	//go playerLoadConfig(playerGM)
+	//go playerLoadConfig(playerGM)
+	//go playerLoadConfig(playerGM)
 
 	// 确实协程在不断运行
 	for {

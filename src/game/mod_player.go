@@ -6,7 +6,6 @@ import (
 )
 
 // 玩家信息
-
 type ModPlayer struct {
 	UserId         int
 	Icon           int

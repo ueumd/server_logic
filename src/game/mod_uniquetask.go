@@ -7,6 +7,8 @@ type TaskInfo struct {
 	TaskId int
 	State  int
 }
+
+// 玩家任务
 type ModUniqueTask struct {
 	MyTaskInfo map[int]*TaskInfo
 	Locker *sync.RWMutex	// 读写锁 解决map 读写问题
