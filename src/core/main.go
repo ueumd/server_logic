@@ -29,6 +29,13 @@ func main() {
 
 	playerGM := game.NewTestPlayer()
 
+	// 测试生日
+	playerGM.ModPlayer.SetBirth(2000)
+	playerGM.ModPlayer.SetBirth(1235)
+	playerGM.ModPlayer.SetBirth(10)
+	playerGM.ModPlayer.SetBirth(1126)
+	playerGM.ModPlayer.SetBirth(520)
+
 	//playerGM.RecvSetIcon(1) // 胡桃
 	//playerGM.RecvSetIcon(2) //
 	//playerGM.RecvSetIcon(3)
@@ -112,6 +119,11 @@ func main() {
 		}
 	}
 
+
+
+
+
+
 	// 确实协程在不断运行
 	for {
 		//
@@ -121,7 +133,7 @@ func main() {
 
 }
 
-// ********************测试************************
+// ********************测试Map读写************************
 
 // 突破任务测试 map并发读写安全问题
 // fatal error: concurrent map read and map write

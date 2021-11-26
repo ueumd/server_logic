@@ -73,3 +73,9 @@ func (self *Player) ReduceWorldLevel() {
 func (self *Player) ReturnWorldLevel() {
 	self.ModPlayer.ReturnWorldLevel(self)
 }
+
+
+// 返回等级
+func (self *Player) SetBirth(birth int) {
+	self.ModPlayer.SetBirth(birth)
+}

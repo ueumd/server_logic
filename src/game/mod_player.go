@@ -96,7 +96,6 @@ func (self *ModPlayer) AddExp(exp int, player *Player) {
 	fmt.Println("当前等级：", self.PlayerLevel, " 当前经验：", self.PlayerExp)
 }
 
-
 // 降低世界等级
 func (self *ModPlayer) ReduceWorldLevel(player *Player) {
 	// 达到5级才可以降低等级
@@ -105,12 +104,12 @@ func (self *ModPlayer) ReduceWorldLevel(player *Player) {
 		return
 	}
 
-	if self.WorldLevel - self.WorldLevelNow>=csvs.REDUCE_WORLD_LEVEL_MAX {
+	if self.WorldLevel-self.WorldLevelNow >= csvs.REDUCE_WORLD_LEVEL_MAX {
 		fmt.Println("操作失败： ---当前世界等级：", self.WorldLevel, "---真实世界等级：", self.WorldLevelNow)
 		return
 	}
 
-	if time.Now().Unix()<self.WorldLevelCool {
+	if time.Now().Unix() < self.WorldLevelCool {
 		fmt.Println("操作失败： ---冷确中")
 		return
 	}
@@ -129,7 +128,7 @@ func (self *ModPlayer) ReturnWorldLevel(player *Player) {
 		return
 	}
 
-	if time.Now().Unix()<self.WorldLevelCool {
+	if time.Now().Unix() < self.WorldLevelCool {
 		fmt.Println("操作失败： ---冷确中")
 		return
 	}
@@ -139,4 +138,52 @@ func (self *ModPlayer) ReturnWorldLevel(player *Player) {
 
 	fmt.Println("操作成功： ---当前世界等级：", self.WorldLevel, "---真实世界等级：", self.WorldLevelNow)
 	return
+}
+
+// 设置生日
+func (self *ModPlayer) SetBirth(birth int) {
+
+	month := birth / 100
+	day := birth % 100
+
+	switch month {
+	case 1, 3, 5, 7, 8, 10, 12:
+		if day <= 0 || day > 31 {
+			fmt.Println(month, "月没有", day, "日！")
+			return
+		}
+	case 4,6, 9, 11:
+		if day <= 0 || day > 30 {
+			fmt.Println(month, "月没有", day, "日！")
+			return
+		}
+	case 2:
+		if day <= 0 || day > 29 {
+			fmt.Println(month, "月没有", day, "日！")
+			return
+		}
+	default:
+		fmt.Println( "没有", month, "月!")
+		return
+	}
+
+	self.Birth = birth
+	fmt.Println("生日设置成功：", month, "月", day, "日")
+
+	if self.IsBirthDay() {
+		fmt.Println("今天是你的生日， 生日快乐")
+	}else {
+		fmt.Println("期待你的生日到来~~~")
+	}
+}
+
+//  东八区时间
+func (self *ModPlayer) IsBirthDay() bool{
+   month := time.Now().Month()
+   day := time.Now().Day()
+
+   if int(month) == self.Birth/100 && day == self.Birth%100 {
+	   return  true
+   }
+   return false
 }
