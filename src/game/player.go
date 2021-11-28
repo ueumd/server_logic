@@ -4,7 +4,7 @@ import "sync"
 
 /**
 实例化一个玩家信息
- */
+*/
 
 // 任务状态
 const (
@@ -15,9 +15,9 @@ const (
 
 // 玩家信息装组
 type Player struct {
-	ModPlayer     *ModPlayer	// 玩家信息
-	ModIcon       *ModIcon		// 玩家Icon
-	ModCard       *ModCard		// 玩家名片
+	ModPlayer     *ModPlayer     // 玩家信息
+	ModIcon       *ModIcon       // 玩家Icon
+	ModCard       *ModCard       // 玩家名片
 	ModUniqueTask *ModUniqueTask // 任务
 }
 
@@ -74,8 +74,21 @@ func (self *Player) ReturnWorldLevel() {
 	self.ModPlayer.ReturnWorldLevel(self)
 }
 
-
 // 返回等级
 func (self *Player) SetBirth(birth int) {
 	self.ModPlayer.SetBirth(birth)
+}
+
+// 展示名片
+func (self *Player) SetShowCard(showCard []int) {
+	self.ModPlayer.SetShowCard(showCard, self)
+}
+
+// 展示阵容
+func (self *Player) SetShowTeam(showTeam []int) {
+	self.ModPlayer.SetShowTeam(showTeam, self)
+}
+
+func (self *Player) SetHideShowTeam(isHide int) {
+	self.ModPlayer.SetHideShowTeam(isHide, self)
 }

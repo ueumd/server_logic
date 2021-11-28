@@ -24,7 +24,7 @@ func main() {
 
 	fmt.Println("数据测试-----start\n")
 
-	// 协程更新词库
+	// 协程更新违禁词库
 	go game.GetManageBanWord().Run()
 
 	playerGM := game.NewTestPlayer()
@@ -118,11 +118,6 @@ func main() {
 			}
 		}
 	}
-
-
-
-
-
 
 	// 确实协程在不断运行
 	for {
