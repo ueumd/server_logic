@@ -25,17 +25,18 @@ type ModPlayer struct {
 	WorldLevelCool int64       // 操作大世界等级冷确时间
 	Birth          int         // 生日
 	ShowTeam       []*ShowRole // 展示阵容
-	HideShowTeam   int         // 开关
-	ShowCard       int         // 展示名片
+	HideShowTeam   int         // 隐藏开关
+	ShowCard       []int       // 展示名片
 
 	// 游戏中看不见的字段
-	IsProhibit int // 封禁状态
-	IsGM       int // GM帐号标志
+	Prohibit int // 封禁状态
+	IsGM     int // GM帐号标志
 }
 
 func (self *ModPlayer) SetIcon(iconId int, player *Player) {
 	if !player.ModIcon.IsHasIcon(iconId) {
 		// 通知客户端 非法操作
+		fmt.Println("没有头像: ", iconId)
 		return
 	}
 
@@ -44,7 +45,7 @@ func (self *ModPlayer) SetIcon(iconId int, player *Player) {
 }
 
 func (self *ModPlayer) SetCard(cardId int, player *Player) {
-	if !player.ModIcon.IsHasCard(cardId) {
+	if !player.ModCard.IsHasCard(cardId) {
 		// 通知客户端 非法操作
 	}
 	player.ModPlayer.Icon = cardId
@@ -194,15 +195,82 @@ func (self *ModPlayer) IsBirthDay() bool {
 	return false
 }
 
-func (self *ModPlayer) SetShowCard(card []int, player *Player) {
+// 展示名片
+func (self *ModPlayer) SetShowCard(showCard []int, player *Player) {
+	if len(showCard) > csvs.SHOW_SIZE {
+		return
+	}
 
+	cardExist := make(map[int]int)
+	newList := make([]int, 0)
+	for _, cardId := range showCard {
+		_, ok := cardExist[cardId]
+		if ok {
+			continue
+		}
+
+		if !player.ModCard.IsHasCard(cardId) {
+			continue
+		}
+
+		newList = append(newList, cardId)
+
+		cardExist[cardId] = 1
+	}
+	self.ShowCard = newList
+	fmt.Println(self.ShowCard)
 }
 
-func (self *ModPlayer) SetShowTeam(showTeam []int, player *Player) {
-	//roleExist := make(map[int]int)
-	//newList := make([]int, 0)
+// 展示阵容
+func (self *ModPlayer) SetShowTeam(showRole []int, player *Player) {
+	if len(showRole) > csvs.SHOW_SIZE {
+		fmt.Println("消息结构错误")
+		return
+	}
+	roleExist := make(map[int]int)
+	newList := make([]*ShowRole, 0)
+
+	for _, roldId := range showRole {
+		_, ok := roleExist[roldId]
+		if ok {
+			continue
+		}
+
+		if !player.ModRole.IsHasRole(roldId) {
+			continue
+		}
+
+		showRole := new(ShowRole)
+		showRole.RoleId = roldId
+		showRole.RoleLevel = player.ModRole.GetRoleLevel(roldId)
+
+		newList = append(newList, showRole)
+
+		roleExist[roldId] = 1
+	}
+	self.ShowTeam = newList
+	fmt.Println(self.ShowTeam)
 }
 
 func (self *ModPlayer) SetHideShowTeam(isHide int, player *Player) {
+	if isHide != csvs.LOGIC_FALSE && isHide != csvs.LOGIC_TRUE {
+		return
+	}
+	self.HideShowTeam = isHide
+}
 
+//Prohibit int // 封禁状态
+//IsGM     int // GM帐号标志
+
+func (self *ModPlayer) SetProhibit(prohibit int) {
+	self.Prohibit = prohibit
+}
+
+func (self *ModPlayer) SetIsGM(isGM int) {
+	self.IsGM = isGM
+}
+
+// 判断是否能登录
+func (self *ModPlayer) IsCanEnter() bool {
+	return int64(self.Prohibit) < time.Now().Unix()
 }

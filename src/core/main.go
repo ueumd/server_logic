@@ -11,12 +11,25 @@ func main() {
 	// 当前模块基础信息
 	// 1 UID
 	// 2 头像 名片
-	// 3 签名
+	// 3 签名      			------- 多线程(5) banword
 	// 4 名字
-	// 5 冒险等级 冒险阅历
+	// 5 冒险等级 冒险阅历	-------	map(10)
 	// 6 世界等级 冷却时间
 	// 7 生日
 	// 8 展示阵容 展示名片
+
+	// 原神 -- 成长核心：背包系统
+
+	// 业务算法：公主连接 夏日赛跑
+
+	// *******************************************
+
+	// 当前模块：背包
+	// 1. 物品识别
+	// 2. 物品增加
+	// 2. 物品消耗
+	// 2. 物品使用
+	// 2. 角色模块 -> 头像模块
 
 	// 加载配置
 	// 执行csv所有init
@@ -29,12 +42,21 @@ func main() {
 
 	playerGM := game.NewTestPlayer()
 
+	// 测试名片
+	//playerGM.ModPlayer.SetShowCard([]int{1001, 1001, 1001, 1002, 1001, 1005}, playerGM)
+	//playerGM.ModPlayer.SetShowCard([]int{}, playerGM)
+	//playerGM.ModPlayer.SetShowCard([]int{1009}, playerGM)
+
+	// 测试阵容
+	// playerGM.ModPlayer.SetShowTeam([]int{1001, 1001, 1001, 1002, 1001, 1005, 1001, 1001, 1002, 10051001, 1001, 1002, 1005}, playerGM)
+	// playerGM.ModPlayer.SetShowTeam([]int{1001, 1001, 1001, 1002}, playerGM)
+
 	// 测试生日
-	playerGM.ModPlayer.SetBirth(2000)
-	playerGM.ModPlayer.SetBirth(1235)
-	playerGM.ModPlayer.SetBirth(10)
-	playerGM.ModPlayer.SetBirth(1126)
-	playerGM.ModPlayer.SetBirth(520)
+	//playerGM.ModPlayer.SetBirth(2000)
+	//playerGM.ModPlayer.SetBirth(1235)
+	//playerGM.ModPlayer.SetBirth(10)
+	//playerGM.ModPlayer.SetBirth(1126)
+	//playerGM.ModPlayer.SetBirth(520)
 
 	//playerGM.RecvSetIcon(1) // 胡桃
 	//playerGM.RecvSetIcon(2) //
@@ -79,7 +101,7 @@ func main() {
 
 	// 玩家等级测试
 	// 直接升级到 60级
-	playerGM.ModPlayer.AddExp(10000000, playerGM)
+	//playerGM.ModPlayer.AddExp(10000000, playerGM)
 
 	// 玩家等级测试
 	// ticker := time.NewTicker(time.Second * 3)
@@ -105,24 +127,50 @@ func main() {
 	//go playerLoadConfig(playerGM)
 
 	// 玩家世界等级测试
-	ticker := time.NewTicker(time.Second * 1)
-	for {
-		select {
-		case <-ticker.C:
-			if time.Now().Unix()%3 == 0 {
-				// 降
-				playerGM.ReturnWorldLevel()
+	//ticker := time.NewTicker(time.Second * 1)
+	//for {
+	//	select {
+	//	case <-ticker.C:
+	//		if time.Now().Unix()%3 == 0 {
+	//			// 降
+	//			playerGM.ReturnWorldLevel()
+	//
+	//		} else if time.Now().Unix()%5 == 0 {
+	//			playerGM.ReduceWorldLevel()
+	//		}
+	//	}
+	//}
 
-			} else if time.Now().Unix()%5 == 0 {
-				playerGM.ReduceWorldLevel()
-			}
-		}
-	}
+	// 玩家登录
+	// 每10S 加入一个玩家
+	//ticker := time.NewTicker(time.Second * 10)
+	//for {
+	//	select {
+	//	case <-ticker.C:
+	//		playerTest := game.NewTestPlayer()
+	//		fmt.Println("==================== Player ====================")
+	//		// 玩家启动自己的协程
+	//		go playerTest.Run()
+	//	}
+	//}
+
+	// 背包：物品添加
+	playerGM.ModBag.AddItem(1000001, playerGM)
+	playerGM.ModBag.AddItem(1000006, playerGM)
+	playerGM.ModBag.AddItem(1000008, playerGM)
+	playerGM.ModBag.AddItem(2000002, playerGM)
+	playerGM.ModBag.AddItem(2000021, playerGM)
+	playerGM.ModBag.AddItem(3000001, playerGM)
+	playerGM.ModBag.AddItem(3000002, playerGM)
+	playerGM.ModBag.AddItem(3000003, playerGM)
+	playerGM.ModBag.AddItem(3000044, playerGM)
+	playerGM.ModBag.AddItem(4000001, playerGM)
+	playerGM.ModBag.AddItem(4000002, playerGM)
 
 	// 确实协程在不断运行
-	for {
-		//
-	}
+	//for {
+	//	//
+	//}
 
 	return
 
