@@ -63,7 +63,7 @@ func NewTestPlayer() *Player {
 	player.ModWeapon.WeaponInfo = make(map[int]*Weapon)
 
 	//****************************************
-	player.ModPlayer.Icon = 0
+	// player.ModPlayer.Icon = 0
 	player.ModPlayer.PlayerLevel = 1
 	player.ModPlayer.Name = "旅行者"
 
@@ -102,8 +102,8 @@ func (self *Player) ReturnWorldLevel() {
 }
 
 // 返回等级
-func (self *Player) SetBirth(birth int) {
-	self.ModPlayer.SetBirth(birth)
+func (self *Player) SetBirth(birth int, player *Player) {
+	self.ModPlayer.SetBirth(birth, player)
 }
 
 // 展示名片
@@ -152,6 +152,7 @@ func (self *Player) Run3() {
 		}
 	}
 }
+
 func (self *Player) Run() {
 	fmt.Println("===========================================")
 	fmt.Println("模拟用户创建成功OK------开始测试")
@@ -179,6 +180,16 @@ func (self *Player) HandleBase() {
 			return
 		case 1:
 			self.HandleBaseGetInfo()
+		case 2:
+			self.HandleBagSetName()
+		case 3:
+			self.HandleBagSetSign()
+		case 4:
+			self.HandleBagSetIcon()
+		case 5:
+			self.HandleBagSetCard()
+		case 6:
+			self.HandleBagSetBirth()
 		}
 	}
 }
@@ -210,4 +221,101 @@ func (self *Player) HandleBaseGetInfo() {
 	} else {
 		fmt.Println("生日:", self.ModPlayer.Birth/100, "月", self.ModPlayer.Birth%100, "日")
 	}
+}
+
+func (self *Player) HandleBagSetName() {
+	fmt.Println("请输入名字：")
+	var name string
+	fmt.Scan(&name)
+	self.RecvSetName(name)
+}
+
+func (self *Player) HandleBagSetSign() {
+	fmt.Println("请输入签名：")
+	var sign string
+	fmt.Scan(&sign)
+	self.RecvSetSign(sign)
+}
+
+// 设置头像
+func (self *Player) HandleBagSetIcon() {
+	for {
+		fmt.Println("当前处于基础信息--头像界面,请选择操作：0返回 1查询头像背包 2设置头像")
+		var action int
+		fmt.Scan(&action)
+		switch action {
+		case 0:
+			return
+		case 1:
+			self.HandleBagSetIconGetInfo()
+		case 2:
+			self.HandleBagSetIconSet()
+		}
+	}
+}
+
+func (self *Player) HandleBagSetIconGetInfo() {
+	fmt.Println("当前拥有头像如下：")
+	for _, v := range self.ModIcon.IconInfo {
+		config := csvs.GetItemConfig(v.IconId)
+		if config != nil {
+			fmt.Println(config.ItemName, ":", config.ItemId)
+		}
+	}
+}
+
+func (self *Player) HandleBagSetIconSet() {
+	fmt.Println("请输入头像id:")
+	var icon int
+	fmt.Scan(&icon)
+	self.RecvSetIcon(icon)
+}
+
+func (self *Player) HandleBagSetCard() {
+	for {
+		fmt.Println("当前处于基础信息--名片界面,请选择操作：0返回1查询名片背包2设置名片")
+		var action int
+		fmt.Scan(&action)
+		switch action {
+		case 0:
+			return
+		case 1:
+			self.HandleBagSetCardGetInfo()
+		case 2:
+			self.HandleBagSetCardSet()
+		}
+	}
+}
+
+// 名片查询
+func (self *Player) HandleBagSetCardGetInfo() {
+	fmt.Println("当前拥有名片如下:")
+	for _, v := range self.ModCard.CardInfo {
+		config := csvs.GetItemConfig(v.CardId)
+		if config != nil {
+			fmt.Println(config.ItemName, ":", config.ItemId)
+		}
+	}
+}
+
+// 名片
+func (self *Player) HandleBagSetCardSet() {
+	fmt.Println("请输入名片id:")
+	var card int
+	fmt.Scan(&card)
+	self.RecvSetCard(card)
+}
+
+// 生日
+func (self *Player) HandleBagSetBirth() {
+	if self.ModPlayer.Birth > 0 {
+		fmt.Println("已设置过生日!")
+		return
+	}
+	fmt.Println("生日只能设置一次，请慎重填写,输入月:")
+	var month, day int
+	fmt.Scan(&month)
+	fmt.Println("请输入日:")
+	fmt.Scan(&day)
+	self.ModPlayer.SetBirth(month*100+day, self)
 }

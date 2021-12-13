@@ -4,11 +4,11 @@ import "server/utils"
 
 type ConfigIcon struct {
 	IconId int `json:"IconId"`
-	Check 	int 	`json:"check"`
+	Check  int `json:"check"`
 }
 
 var (
-	ConfigIconMap map[int]*ConfigIcon
+	ConfigIconMap         map[int]*ConfigIcon
 	ConfigIconMapByRoleId map[int]*ConfigIcon
 )
 

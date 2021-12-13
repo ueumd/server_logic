@@ -27,13 +27,14 @@ func GetItemConfig(itemId int) *ConfigItem {
 	return ConfigItemMap[itemId]
 }
 
-func GetItemName(itemId int) string  {
+func GetItemName(itemId int) string {
 	config := GetItemConfig(itemId)
 	if config == nil {
 		return ""
 	}
 	return config.ItemName
 }
+
 //func loadConfigItemCsv() {
 //	exPath, _ := os.Getwd()
 //	fmt.Println("path", exPath)

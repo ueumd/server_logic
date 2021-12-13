@@ -148,7 +148,7 @@ func (self *ModPlayer) ReturnWorldLevel(player *Player) {
 }
 
 // 设置生日
-func (self *ModPlayer) SetBirth(birth int) {
+func (self *ModPlayer) SetBirth(birth int, player *Player) {
 
 	month := birth / 100
 	day := birth % 100
