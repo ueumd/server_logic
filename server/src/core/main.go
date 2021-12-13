@@ -155,17 +155,34 @@ func main() {
 	//}
 
 	// 背包：物品添加
-	playerGM.ModBag.AddItem(1000001, playerGM)
-	playerGM.ModBag.AddItem(1000006, playerGM)
-	playerGM.ModBag.AddItem(1000008, playerGM)
-	playerGM.ModBag.AddItem(2000002, playerGM)
-	playerGM.ModBag.AddItem(2000021, playerGM)
-	playerGM.ModBag.AddItem(3000001, playerGM)
-	playerGM.ModBag.AddItem(3000002, playerGM)
-	playerGM.ModBag.AddItem(3000003, playerGM)
-	playerGM.ModBag.AddItem(3000044, playerGM)
-	playerGM.ModBag.AddItem(4000001, playerGM)
-	playerGM.ModBag.AddItem(4000002, playerGM)
+	//playerGM.ModBag.AddItem(1000001, playerGM)
+	//playerGM.ModBag.AddItem(1000006, playerGM)
+	//playerGM.ModBag.AddItem(1000008, playerGM)
+	//playerGM.ModBag.AddItem(2000002, playerGM)
+	//playerGM.ModBag.AddItem(2000021, playerGM)
+	//playerGM.ModBag.AddItem(3000001, playerGM)
+	//playerGM.ModBag.AddItem(3000002, playerGM)
+	//playerGM.ModBag.AddItem(3000003, playerGM)
+	//playerGM.ModBag.AddItem(3000044, playerGM)
+	//playerGM.ModBag.AddItem(4000001, playerGM)
+	//playerGM.ModBag.AddItem(4000002, playerGM)
+
+	// 增删物品
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+	//playerGM.ModBag.AddItemToBag(1000003, 500)
+	//playerGM.ModBag.AddItemToBag(1000003, 800)
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+	//playerGM.ModBag.RemoveItemToBagGM(1000003, 1000)
+
+
+	// 玩家添删物品
+	go playerGM.Run()
+	for{}
+
 
 	// 确实协程在不断运行
 	//for {

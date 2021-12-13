@@ -24,7 +24,7 @@ func loadUniqueTaskCsv() {
 	exPath, _ := os.Getwd()
 	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("../csv/UniqueTask.csv")
+	fs, _ := os.Open("../../csv/UniqueTask.csv")
 	result := csv.NewReader(fs)
 
 	content, err := result.ReadAll()
@@ -42,7 +42,7 @@ func loadUniqueTaskCsv() {
 			TaskType, _ := strconv.Atoi(row[3])
 			Condition, _ := strconv.Atoi(row[4])
 
-			ConfigUniqueTaskMap[TaskId] = &ConfigUniqueTask {
+			ConfigUniqueTaskMap[TaskId] = &ConfigUniqueTask{
 				TaskId,
 				SortType,
 				OpenLevel,

@@ -24,7 +24,7 @@ func loadCsv() {
 	exPath, _ := os.Getwd()
 	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("../csv/PlayerLevel.csv")
+	fs, _ := os.Open("../../csv/PlayerLevel.csv")
 	result := csv.NewReader(fs)
 
 	content, err := result.ReadAll()

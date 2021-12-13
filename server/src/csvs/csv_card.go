@@ -25,7 +25,7 @@ func loadConfigCardCsv() {
 	exPath, _ := os.Getwd()
 	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("../csv/Card.csv")
+	fs, _ := os.Open("../../csv/Card.csv")
 	result := csv.NewReader(fs)
 
 	content, err := result.ReadAll()

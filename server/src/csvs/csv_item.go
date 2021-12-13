@@ -33,7 +33,7 @@ func loadConfigItemCsv() {
 	exPath, _ := os.Getwd()
 	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("../csv/Item.csv")
+	fs, _ := os.Open("../../csv/Item.csv")
 	result := csv.NewReader(fs)
 
 	content, err := result.ReadAll()

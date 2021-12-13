@@ -24,7 +24,7 @@ func loadIconCsv() {
 	exPath, _ := os.Getwd()
 	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("../csv/Icon.csv")
+	fs, _ := os.Open("../../csv/Icon.csv")
 	result := csv.NewReader(fs)
 
 	content, err := result.ReadAll()

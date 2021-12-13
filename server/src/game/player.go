@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"sync"
 	"time"
 )
@@ -45,7 +44,11 @@ func NewTestPlayer() *Player {
 	player.ModCard.CardInfo = make(map[int]*Card)
 
 	player.ModRole = new(ModeRole)
+	player.ModRole.RoleInfo = make(map[int]*RoleInfo)
+
+	// 完家背包
 	player.ModBag = new(ModBag)
+	player.ModBag.BagInfo =  make(map[int]*ItemInfo)
 
 	// 任务
 	player.ModUniqueTask = new(ModUniqueTask)
@@ -112,13 +115,34 @@ func (self *Player) SetHideShowTeam(isHide int) {
 }
 
 // 监听客户端给服务器发送消息
+func (self *Player) Run2() {
+	ticker := time.NewTicker(time.Second * 1)
+	for {
+		select {
+		case <-ticker.C:
+			if time.Now().Unix() %5 == 0 {
+				// 每5s增加加1000
+				self.ModBag.AddItem(1000003, 1000, self)
+			} else {
+				// 每1s扣300
+				self.ModBag.RemoveItemToBag(1000003, 300)
+			}
+
+			//玩家报时
+			// fmt.Println(time.Now().Unix())
+		}
+	}
+}
+
 func (self *Player) Run() {
 	ticker := time.NewTicker(time.Second * 1)
 	for {
 		select {
 		case <-ticker.C:
-			// 玩家报时
-			fmt.Println(time.Now().Unix())
+			if time.Now().Unix() %5 == 0 {
+				// 每5s
+				self.ModBag.AddItem(2000017, 7, self)
+			}
 		}
 	}
 }
