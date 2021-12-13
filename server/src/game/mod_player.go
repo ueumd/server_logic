@@ -16,7 +16,7 @@ type ModPlayer struct {
 	UserId         int         // 唯id
 	Icon           int         // 头像
 	Card           int         // 名片
-	Name           string      // 名字
+	Name           string      // 名字 新增banword模块
 	Sign           string      // 签名
 	PlayerLevel    int         // 玩家等级 	由配置表导入
 	PlayerExp      int         // 阅历（经验） 由配置表导入
@@ -41,7 +41,7 @@ func (self *ModPlayer) SetIcon(iconId int, player *Player) {
 	}
 
 	player.ModPlayer.Icon = iconId
-	fmt.Println("当前图标：", player.ModPlayer.Icon)
+	fmt.Println("变更头像为:", csvs.GetItemName(iconId), player.ModPlayer.Icon)
 }
 
 func (self *ModPlayer) SetCard(cardId int, player *Player) {

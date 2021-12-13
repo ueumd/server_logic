@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+	"server/csvs"
 	"sync"
 	"time"
 )
@@ -23,7 +25,8 @@ type Player struct {
 	ModCard       *ModCard       // 玩家名片
 	ModUniqueTask *ModUniqueTask // 任务
 	ModRole       *ModeRole
-	ModBag        *ModBag // 背包
+	ModBag        *ModBag    // 背包
+	ModWeapon     *ModWeapon // 武器
 }
 
 // 测试 初始化
@@ -48,23 +51,26 @@ func NewTestPlayer() *Player {
 
 	// 完家背包
 	player.ModBag = new(ModBag)
-	player.ModBag.BagInfo =  make(map[int]*ItemInfo)
+	player.ModBag.BagInfo = make(map[int]*ItemInfo)
 
 	// 任务
 	player.ModUniqueTask = new(ModUniqueTask)
 	player.ModUniqueTask.MyTaskInfo = make(map[int]*TaskInfo)
 	player.ModUniqueTask.Locker = new(sync.RWMutex)
 
-	//************************************
-	// 初始化值
+	// 武器
+	player.ModWeapon = new(ModWeapon)
+	player.ModWeapon.WeaponInfo = make(map[int]*Weapon)
+
+	//****************************************
 	player.ModPlayer.Icon = 0
 	player.ModPlayer.PlayerLevel = 1
+	player.ModPlayer.Name = "旅行者"
 
 	// 玩家等级初始化
-	player.ModPlayer.WorldLevel = 6
-	player.ModPlayer.WorldLevelNow = 6
-	//************************************
-
+	player.ModPlayer.WorldLevel = 1
+	player.ModPlayer.WorldLevelNow = 1
+	//****************************************
 	return player
 }
 
@@ -120,7 +126,7 @@ func (self *Player) Run2() {
 	for {
 		select {
 		case <-ticker.C:
-			if time.Now().Unix() %5 == 0 {
+			if time.Now().Unix()%5 == 0 {
 				// 每5s增加加1000
 				self.ModBag.AddItem(1000003, 1000, self)
 			} else {
@@ -134,15 +140,74 @@ func (self *Player) Run2() {
 	}
 }
 
-func (self *Player) Run() {
+func (self *Player) Run3() {
 	ticker := time.NewTicker(time.Second * 1)
 	for {
 		select {
 		case <-ticker.C:
-			if time.Now().Unix() %5 == 0 {
+			if time.Now().Unix()%5 == 0 {
 				// 每5s
 				self.ModBag.AddItem(2000017, 7, self)
 			}
 		}
+	}
+}
+func (self *Player) Run() {
+	fmt.Println("===========================================")
+	fmt.Println("模拟用户创建成功OK------开始测试")
+	fmt.Println("===========================================")
+	for {
+		fmt.Println(self.ModPlayer.Name, ",欢迎来到提瓦特大陆,请选择功能：1基础信息 2背包 3(优菈UP池)模拟抽卡 4地图(未开放)")
+		var modChoose int
+		fmt.Scan(&modChoose)
+		switch modChoose {
+		case 1:
+			self.HandleBase()
+		}
+	}
+}
+
+// 基础信息
+func (self *Player) HandleBase() {
+	for {
+		fmt.Println("当前处于基础信息界面,请选择操作：\n0返回 \n1查询信息 \n2设置名字 \n3设置签名 \n4头像 \n5名片 \n6设置生日")
+
+		var action int
+		fmt.Scan(&action)
+		switch action {
+		case 0:
+			return
+		case 1:
+			self.HandleBaseGetInfo()
+		}
+	}
+}
+
+func (self *Player) HandleBaseGetInfo() {
+	fmt.Println("名字:", self.ModPlayer.Name)
+	fmt.Println("等级:", self.ModPlayer.PlayerLevel)
+	fmt.Println("大世界等级:", self.ModPlayer.WorldLevelNow)
+	if self.ModPlayer.Sign == "" {
+		fmt.Println("签名:", "未设置")
+	} else {
+		fmt.Println("签名:", self.ModPlayer.Sign)
+	}
+
+	if self.ModPlayer.Icon == 0 {
+		fmt.Println("头像:", "未设置")
+	} else {
+		fmt.Println("头像:", csvs.GetItemConfig(self.ModPlayer.Icon), self.ModPlayer.Icon)
+	}
+
+	if self.ModPlayer.Card == 0 {
+		fmt.Println("名片:", "未设置")
+	} else {
+		fmt.Println("名片:", csvs.GetItemConfig(self.ModPlayer.Card), self.ModPlayer.Card)
+	}
+
+	if self.ModPlayer.Birth == 0 {
+		fmt.Println("生日:", "未设置")
+	} else {
+		fmt.Println("生日:", self.ModPlayer.Birth/100, "月", self.ModPlayer.Birth%100, "日")
 	}
 }

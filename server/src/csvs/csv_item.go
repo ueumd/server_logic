@@ -1,11 +1,7 @@
 package csvs
 
 import (
-	"encoding/csv"
-	"fmt"
-	"log"
-	"os"
-	"strconv"
+	"server/utils"
 )
 
 // 对应表里SortType
@@ -14,6 +10,7 @@ const (
 	ITEMTYPE_ROLE   = 2 // 角色
 	ITEMTYPE_ICON   = 3 // 头像
 	ITEMTYPE_CARD   = 4 // 名片
+	ITEMTYPE_WEAPON = 6 // 武器
 )
 
 type ConfigItem struct {
@@ -29,34 +26,44 @@ var (
 func GetItemConfig(itemId int) *ConfigItem {
 	return ConfigItemMap[itemId]
 }
-func loadConfigItemCsv() {
-	exPath, _ := os.Getwd()
-	fmt.Println("path", exPath)
 
-	fs, _ := os.Open("../../csv/Item.csv")
-	result := csv.NewReader(fs)
-
-	content, err := result.ReadAll()
-	if err != nil {
-		log.Fatalf("can not readall, err is %+v", err)
+func GetItemName(itemId int) string  {
+	config := GetItemConfig(itemId)
+	if config == nil {
+		return ""
 	}
-	ConfigItemMap = make(map[int]*ConfigItem)
-	for index, row := range content {
-		if index > 2 {
-			ItemId, _ := strconv.Atoi(row[0])
-			SortType, _ := strconv.Atoi(row[1])
-			ItemName := row[2]
-
-			ConfigItemMap[ItemId] = &ConfigItem{
-				ItemId, SortType, ItemName,
-			}
-
-		}
-	}
-
-	fmt.Println(ConfigItemMap[0])
+	return config.ItemName
 }
+//func loadConfigItemCsv() {
+//	exPath, _ := os.Getwd()
+//	fmt.Println("path", exPath)
+//
+//	fs, _ := os.Open("../../csv/Item.csv")
+//	result := csv.NewReader(fs)
+//
+//	content, err := result.ReadAll()
+//	if err != nil {
+//		log.Fatalf("can not readall, err is %+v", err)
+//	}
+//	ConfigItemMap = make(map[int]*ConfigItem)
+//	for index, row := range content {
+//		if index > 2 {
+//			ItemId, _ := strconv.Atoi(row[0])
+//			SortType, _ := strconv.Atoi(row[1])
+//			ItemName := row[2]
+//
+//			ConfigItemMap[ItemId] = &ConfigItem{
+//				ItemId, SortType, ItemName,
+//			}
+//
+//		}
+//	}
+//
+//	fmt.Println(ConfigItemMap[0])
+//}
 
 func init() {
-	loadConfigItemCsv()
+	ConfigItemMap = make(map[int]*ConfigItem)
+	utils.GetCsvUtilMgr().LoadCsv("Item", &ConfigItemMap)
+	return
 }

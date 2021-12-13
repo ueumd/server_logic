@@ -41,3 +41,12 @@ func (self *ModIcon) AddItem(itemId int) {
 
 	fmt.Println("获得头像", itemId)
 }
+
+func (self *ModIcon) CheckGetIcon(iconId int) {
+	config := csvs.GetIconConfigByRoleId(iconId)
+	if config == nil {
+		fmt.Println("不存在")
+		return
+	}
+	self.AddItem(config.IconId)
+}

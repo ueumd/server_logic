@@ -24,8 +24,7 @@ func (self *ModeRole) GetRoleLevel(roleId int) int {
 	return 80
 }
 
-
-func (self *ModeRole) AddItem(roleId int, num int64) {
+func (self *ModeRole) AddItem(roleId int, num int64, player *Player) {
 	config := csvs.GetRoleConfig(roleId)
 	if config == nil {
 		fmt.Println("配置不存在roleId:", roleId)
@@ -43,6 +42,15 @@ func (self *ModeRole) AddItem(roleId int, num int64) {
 		} else {
 			fmt.Println("获得实际物品")
 			self.RoleInfo[roleId].GetTimes ++
+
+			//判断实际获得东西 2-7
+			if self.RoleInfo[roleId].GetTimes >= csvs.ADD_ROLE_TIME_NORMAL_MIN &&
+				self.RoleInfo[roleId].GetTimes <= csvs.ADD_ROLE_TIME_NORMAL_MAX {
+				player.ModBag.AddItemToBag(config.Stuff, config.StuffNum)
+				player.ModBag.AddItemToBag(config.StuffItem, config.StuffItemNum)
+			} else {
+				player.ModBag.AddItemToBag(config.MaxStuffItem, config.MaxStuffItemNum)
+			}
 		}
 	}
 
@@ -50,4 +58,7 @@ func (self *ModeRole) AddItem(roleId int, num int64) {
 	if itemConfig != nil {
 		fmt.Println("获得角色", itemConfig.ItemName, "次数", roleId, self.RoleInfo[roleId].GetTimes, "次")
 	}
+
+	player.ModIcon.CheckGetIcon(roleId)
+	player.ModCard.CheckGetCard(roleId, 10)
 }

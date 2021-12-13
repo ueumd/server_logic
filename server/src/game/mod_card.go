@@ -48,3 +48,11 @@ func (self *ModCard) AddItem(itemId int, friendliness int) {
 
 	fmt.Println("获得名片", itemId)
 }
+
+func (self *ModCard) CheckGetCard(roleId int,friendliness int) {
+	config:=csvs.GetCardConfigByRoleId(roleId)
+	if config==nil{
+		return
+	}
+	self.AddItem(config.CardId,friendliness)
+}
